@@ -1,0 +1,132 @@
+// 自動車販売・整備業者向け 予約／日程調整／リマインド システム
+// SQLite を使用（ポートフォリオ用に手軽に起動できる構成）
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/// 店舗（MVP では 1 レコードのシングルトン運用）
+model Shop {
+  id        String  @id @default(cuid())
+  name      String
+  phone     String?
+  address   String?
+  timezone  String  @default("Asia/Tokyo")
+  /// 予約枠の刻み（分）。例: 30 なら 9:00, 9:30, ... の単位で枠を生成
+  slotInterval Int  @default(30)
+  /// 同一時間帯に並行して受けられる予約数（ピット/作業員の数など）
+  capacity     Int  @default(1)
+
+  businessHours BusinessHour[]
+  holidays      Holiday[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// 曜日ごとの営業時間（0=日曜 ... 6=土曜）
+model BusinessHour {
+  id        String  @id @default(cuid())
+  shopId    String
+  shop      Shop    @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  weekday   Int
+  /// 開店・閉店を 0:00 からの分で保持（例: 9:00 = 540）
+  openMin   Int
+  closeMin  Int
+  isClosed  Boolean @default(false)
+
+  @@unique([shopId, weekday])
+}
+
+/// 臨時休業日・定休日（特定日）
+model Holiday {
+  id     String   @id @default(cuid())
+  shopId String
+  shop   Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  /// その日の 00:00 (店舗TZ) を表す日付
+  date   DateTime
+  reason String?
+
+  @@unique([shopId, date])
+}
+
+/// 整備・サービスメニュー
+model Service {
+  id          String  @id @default(cuid())
+  name        String
+  description String?
+  /// 作業所要時間（分）
+  durationMin Int     @default(60)
+  price       Int?
+  color       String  @default("#2563eb")
+  active      Boolean @default(true)
+  sortOrder   Int     @default(0)
+
+  bookings  Booking[]
+  waitlist  WaitlistEntry[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// 予約
+/// status: PENDING（受付・未確定） / CONFIRMED（確定） / CANCELLED（キャンセル） / COMPLETED（完了）
+model Booking {
+  id        String   @id @default(cuid())
+  /// 顧客に通知する公開予約番号
+  code      String   @unique
+
+  serviceId String
+  service   Service  @relation(fields: [serviceId], references: [id])
+
+  customerName  String
+  customerEmail String
+  customerPhone String?
+  carModel      String?
+  carPlate      String?
+  note          String?
+
+  startAt   DateTime
+  endAt     DateTime
+  status    String   @default("CONFIRMED")
+
+  /// リマインドメール送信済み日時
+  reminderSentAt DateTime?
+  /// Google Calendar 連携で作成されたイベントID
+  googleEventId  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([startAt])
+  @@index([status])
+}
+
+/// キャンセル待ち
+/// status: WAITING（待機中） / NOTIFIED（空き通知済み） / CONVERTED（予約成立） / CANCELLED（取消）
+model WaitlistEntry {
+  id        String   @id @default(cuid())
+
+  serviceId String
+  service   Service  @relation(fields: [serviceId], references: [id])
+
+  customerName  String
+  customerEmail String
+  customerPhone String?
+  note          String?
+
+  /// 希望日（その日の 00:00 店舗TZ）
+  desiredDate DateTime
+  status      String   @default("WAITING")
+  notifiedAt  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([desiredDate])
+  @@index([status])
+}
