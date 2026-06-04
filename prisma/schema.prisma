@@ -1,11 +1,10 @@
 // 自動車販売・整備業者向け 予約／日程調整／リマインド システム
-// SQLite を使用（ポートフォリオ用に手軽に起動できる構成）
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
