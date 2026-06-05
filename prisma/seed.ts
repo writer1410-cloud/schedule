@@ -17,13 +17,12 @@ function dateStr(d: Date): string {
 async function main() {
   console.log("Seeding...");
 
-  // 既存データを掃除（デモ用に冪等化）
-  await prisma.booking.deleteMany();
-  await prisma.waitlistEntry.deleteMany();
-  await prisma.holiday.deleteMany();
-  await prisma.businessHour.deleteMany();
-  await prisma.service.deleteMany();
-  await prisma.shop.deleteMany();
+  // 既に初期データがあればスキップ（再デプロイ時のデータ消去・重複を防止）
+  const existing = await prisma.shop.findFirst();
+  if (existing) {
+    console.log("Seed skipped: shop already exists");
+    return;
+  }
 
   // 店舗（シングルトン）
   const shop = await prisma.shop.create({
