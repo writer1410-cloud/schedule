@@ -17,34 +17,34 @@ export default function RootLayout({
     <html lang="ja">
       <body className="min-h-screen flex flex-col">
         <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200/70">
-          <div className="mx-auto max-w-5xl px-4 h-16 flex items-center justify-between">
+          <div className="mx-auto max-w-5xl px-4 h-16 flex items-center justify-between gap-2">
             <Link
               href="/"
-              className="flex items-center gap-2 font-bold text-lg tracking-tight text-gray-900"
+              className="flex items-center gap-2 shrink-0 font-bold text-base sm:text-lg tracking-tight text-gray-900"
             >
-              <span className="flex h-8 w-8 items-center justify-center bg-gradient-to-br from-blue-600 to-cyan-500 text-white">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center bg-gradient-to-br from-blue-600 to-cyan-500 text-white">
                 🚗
               </span>
-              <span>
+              <span className="hidden xs:inline">
                 Auto<span className="text-blue-600">Reserve</span>
               </span>
             </Link>
-            <nav className="flex items-center gap-1 sm:gap-2 text-sm">
+            <nav className="flex items-center gap-0.5 sm:gap-2 text-sm shrink-0">
               <Link
                 href="/book"
-                className="px-3 py-2 text-gray-600 hover:text-blue-700 hover:bg-blue-50 transition"
+                className="px-2 sm:px-3 py-2 whitespace-nowrap text-gray-600 hover:text-blue-700 hover:bg-blue-50 transition"
               >
                 予約する
               </Link>
               <Link
                 href="/booking"
-                className="px-3 py-2 text-gray-600 hover:text-blue-700 hover:bg-blue-50 transition"
+                className="px-2 sm:px-3 py-2 whitespace-nowrap text-gray-600 hover:text-blue-700 hover:bg-blue-50 transition"
               >
                 予約確認
               </Link>
               <Link
                 href="/admin"
-                className="px-3 py-2 text-gray-600 hover:text-blue-700 hover:bg-blue-50 transition"
+                className="px-2 sm:px-3 py-2 whitespace-nowrap text-gray-600 hover:text-blue-700 hover:bg-blue-50 transition"
               >
                 管理
               </Link>

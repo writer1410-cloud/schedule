@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* 追加ブレークポイント（狭いスマホ対応） */
+@theme {
+  --breakpoint-xs: 400px;
+}
+
 :root {
   --background: #f1f5f9;
   --foreground: #0f172a;
