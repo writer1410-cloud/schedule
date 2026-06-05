@@ -37,14 +37,14 @@ export default function BookingActions({
       <button
         onClick={() => update("COMPLETED")}
         disabled={busy}
-        className="px-2 py-1 text-xs rounded border border-blue-300 text-blue-700 hover:bg-blue-50 disabled:opacity-50"
+        className="px-2 py-1 text-xs border border-blue-300 text-blue-700 hover:bg-blue-50 disabled:opacity-50"
       >
         完了
       </button>
       <button
         onClick={() => update("CANCELLED")}
         disabled={busy}
-        className="px-2 py-1 text-xs rounded border border-red-300 text-red-700 hover:bg-red-50 disabled:opacity-50"
+        className="px-2 py-1 text-xs border border-red-300 text-red-700 hover:bg-red-50 disabled:opacity-50"
       >
         取消
       </button>

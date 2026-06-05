@@ -63,7 +63,7 @@ export default async function AdminPage() {
   return (
     <div className="space-y-8">
       {/* ヘッダー */}
-      <div className="relative overflow-hidden rounded-2xl bg-slate-900 text-white">
+      <div className="relative overflow-hidden bg-slate-900 text-white">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-20"
           style={{
@@ -119,7 +119,7 @@ export default async function AdminPage() {
                             {formatHuman(b.startAt).split(" ")[1]}
                           </span>
                           <span
-                            className={`text-xs px-2 py-0.5 rounded-full ${st.cls}`}
+                            className={`text-xs px-2 py-0.5 ${st.cls}`}
                           >
                             {st.text}
                           </span>
@@ -175,7 +175,7 @@ export default async function AdminPage() {
                             </td>
                             <td className="px-3 py-2">
                               <span
-                                className={`text-xs px-2 py-0.5 rounded-full whitespace-nowrap ${st.cls}`}
+                                className={`text-xs px-2 py-0.5 whitespace-nowrap ${st.cls}`}
                               >
                                 {st.text}
                               </span>
@@ -252,7 +252,7 @@ function Stat({
   return (
     <div className="card p-4 flex items-center gap-3">
       <div
-        className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${accent} text-xl text-white shadow-md`}
+        className={`flex h-11 w-11 shrink-0 items-center justify-center bg-gradient-to-br ${accent} text-xl text-white shadow-md`}
       >
         {icon}
       </div>

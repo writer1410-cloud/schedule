@@ -64,7 +64,7 @@ function WaitlistForm() {
   if (done) {
     return (
       <div className="max-w-lg mx-auto mt-6 card p-8 text-center">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-orange-500 text-3xl text-white shadow-lg">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center bg-gradient-to-br from-amber-400 to-orange-500 text-3xl text-white shadow-lg">
           ⏳
         </div>
         <h1 className="mt-5 text-xl font-bold">

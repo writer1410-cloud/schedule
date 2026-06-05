@@ -10,7 +10,7 @@ export default function BookingLookupPage() {
   return (
     <div className="max-w-md mx-auto mt-6 card p-7 space-y-4">
       <div className="flex flex-col items-center text-center">
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 text-2xl text-white shadow-lg">
+        <div className="flex h-14 w-14 items-center justify-center bg-gradient-to-br from-blue-600 to-cyan-500 text-2xl text-white shadow-lg">
           🔍
         </div>
         <h1 className="mt-4 text-xl font-bold">予約確認・キャンセル</h1>

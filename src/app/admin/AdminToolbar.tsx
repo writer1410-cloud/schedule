@@ -28,20 +28,20 @@ export default function AdminToolbar() {
   return (
     <div className="flex items-center gap-2">
       {msg && (
-        <span className="text-xs text-emerald-300 bg-emerald-500/10 border border-emerald-400/20 px-2 py-1 rounded-lg">
+        <span className="text-xs text-emerald-300 bg-emerald-500/10 border border-emerald-400/20 px-2 py-1">
           {msg}
         </span>
       )}
       <button
         onClick={runReminders}
         disabled={busy}
-        className="px-3 py-2 text-sm rounded-lg bg-white text-slate-900 font-medium hover:bg-gray-100 disabled:opacity-50 transition"
+        className="px-3 py-2 text-sm bg-white text-slate-900 font-medium hover:bg-gray-100 disabled:opacity-50 transition"
       >
         {busy ? "送信中…" : "前日リマインド送信"}
       </button>
       <button
         onClick={logout}
-        className="px-3 py-2 text-sm rounded-lg bg-white/10 border border-white/20 text-white hover:bg-white/20 transition"
+        className="px-3 py-2 text-sm bg-white/10 border border-white/20 text-white hover:bg-white/20 transition"
       >
         ログアウト
       </button>

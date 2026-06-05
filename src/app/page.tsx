@@ -54,7 +54,7 @@ export default function Home() {
   return (
     <div className="space-y-16">
       {/* ヒーロー */}
-      <section className="relative -mx-4 sm:mx-0 overflow-hidden sm:rounded-3xl">
+      <section className="relative -mx-4 sm:mx-0 overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
@@ -63,7 +63,7 @@ export default function Home() {
           }}
         />
         <div className="relative px-6 sm:px-12 py-20 sm:py-28">
-          <span className="inline-flex items-center gap-2 rounded-full bg-blue-500/15 border border-blue-400/30 px-3 py-1 text-xs font-medium text-blue-200">
+          <span className="inline-flex items-center gap-2 bg-blue-500/15 border border-blue-400/30 px-3 py-1 text-xs font-medium text-blue-200">
             <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />
             自動車整備・販売店向け 予約システム
           </span>
@@ -81,13 +81,13 @@ export default function Home() {
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
               href="/book"
-              className="px-7 py-3.5 rounded-xl bg-blue-600 text-white font-semibold shadow-lg shadow-blue-900/40 hover:bg-blue-500 transition"
+              className="px-7 py-3.5 bg-blue-600 text-white font-semibold shadow-lg shadow-blue-900/40 hover:bg-blue-500 transition"
             >
               予約してみる →
             </Link>
             <Link
               href="/admin"
-              className="px-7 py-3.5 rounded-xl bg-white/10 backdrop-blur border border-white/20 text-white font-semibold hover:bg-white/20 transition"
+              className="px-7 py-3.5 bg-white/10 backdrop-blur border border-white/20 text-white font-semibold hover:bg-white/20 transition"
             >
               管理画面を見る
             </Link>
@@ -123,9 +123,9 @@ export default function Home() {
           {features.map((f) => (
             <div
               key={f.title}
-              className="group bg-white rounded-2xl border border-gray-200 p-6 hover:shadow-xl hover:border-blue-200 transition"
+              className="group bg-white border border-gray-200 p-6 hover:shadow-xl hover:border-blue-200 transition"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-2xl group-hover:bg-blue-600 group-hover:scale-105 transition">
+              <div className="flex h-12 w-12 items-center justify-center bg-blue-50 text-2xl group-hover:bg-blue-600 group-hover:scale-105 transition">
                 {f.icon}
               </div>
               <h3 className="mt-4 font-semibold text-gray-900">{f.title}</h3>
@@ -139,7 +139,7 @@ export default function Home() {
 
       {/* 整備品質バンド（写真） */}
       <section
-        className="relative -mx-4 sm:mx-0 overflow-hidden sm:rounded-3xl"
+        className="relative -mx-4 sm:mx-0 overflow-hidden"
         style={{ backgroundColor: "#0f172a" }}
       >
         <div
@@ -160,7 +160,7 @@ export default function Home() {
             </p>
             <Link
               href="/book"
-              className="mt-6 inline-block px-6 py-3 rounded-xl bg-white text-slate-900 font-semibold hover:bg-gray-100 transition"
+              className="mt-6 inline-block px-6 py-3 bg-white text-slate-900 font-semibold hover:bg-gray-100 transition"
             >
               空き枠を見る →
             </Link>
@@ -173,7 +173,7 @@ export default function Home() {
             ].map((s) => (
               <div
                 key={s.l}
-                className="rounded-2xl bg-white/10 backdrop-blur border border-white/15 p-4 text-center"
+                className="bg-white/10 backdrop-blur border border-white/15 p-4 text-center"
               >
                 <div className="text-xl font-bold text-white">{s.n}</div>
                 <div className="mt-1 text-xs text-gray-300">{s.l}</div>
@@ -197,10 +197,10 @@ export default function Home() {
           {services.map((s) => (
             <div
               key={s.name}
-              className="flex items-center gap-3 bg-white rounded-2xl border border-gray-200 p-5 hover:shadow-lg transition"
+              className="flex items-center gap-3 bg-white border border-gray-200 p-5 hover:shadow-lg transition"
             >
               <span
-                className="h-10 w-1.5 rounded-full shrink-0"
+                className="h-10 w-1.5 shrink-0"
                 style={{ background: s.color }}
               />
               <div className="flex-1">
@@ -220,7 +220,7 @@ export default function Home() {
 
       {/* CTA */}
       <section
-        className="relative -mx-4 sm:mx-0 overflow-hidden sm:rounded-3xl text-center"
+        className="relative -mx-4 sm:mx-0 overflow-hidden text-center"
         style={{ backgroundColor: "#1e3a8a" }}
       >
         <div
@@ -236,7 +236,7 @@ export default function Home() {
           </p>
           <Link
             href="/book"
-            className="mt-7 inline-block px-8 py-4 rounded-xl bg-white text-blue-700 font-bold shadow-lg hover:bg-gray-100 transition"
+            className="mt-7 inline-block px-8 py-4 bg-white text-blue-700 font-bold shadow-lg hover:bg-gray-100 transition"
           >
             予約をはじめる →
           </Link>

@@ -24,7 +24,7 @@ export default async function BookingDetailPage({
   if (!booking) {
     return (
       <div className="max-w-md mx-auto mt-6 card p-8 text-center">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-100 text-3xl">
+        <div className="mx-auto flex h-14 w-14 items-center justify-center bg-gray-100 text-3xl">
           🔍
         </div>
         <h1 className="mt-4 font-bold text-lg">予約が見つかりません</h1>
@@ -58,7 +58,7 @@ export default async function BookingDetailPage({
         <div className="absolute inset-0 bg-gradient-to-r from-slate-900 to-slate-900/60" />
         <div className="relative flex items-center justify-between">
           <h1 className="text-xl font-bold">予約内容</h1>
-          <span className={`text-xs px-2.5 py-1 rounded-full ${status.cls}`}>
+          <span className={`text-xs px-2.5 py-1 ${status.cls}`}>
             {status.text}
           </span>
         </div>

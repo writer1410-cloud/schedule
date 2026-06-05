@@ -22,7 +22,7 @@ export default function RootLayout({
               href="/"
               className="flex items-center gap-2 font-bold text-lg tracking-tight text-gray-900"
             >
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-cyan-500 text-white">
+              <span className="flex h-8 w-8 items-center justify-center bg-gradient-to-br from-blue-600 to-cyan-500 text-white">
                 🚗
               </span>
               <span>
@@ -32,19 +32,19 @@ export default function RootLayout({
             <nav className="flex items-center gap-1 sm:gap-2 text-sm">
               <Link
                 href="/book"
-                className="px-3 py-2 rounded-lg text-gray-600 hover:text-blue-700 hover:bg-blue-50 transition"
+                className="px-3 py-2 text-gray-600 hover:text-blue-700 hover:bg-blue-50 transition"
               >
                 予約する
               </Link>
               <Link
                 href="/booking"
-                className="px-3 py-2 rounded-lg text-gray-600 hover:text-blue-700 hover:bg-blue-50 transition"
+                className="px-3 py-2 text-gray-600 hover:text-blue-700 hover:bg-blue-50 transition"
               >
                 予約確認
               </Link>
               <Link
                 href="/admin"
-                className="px-3 py-2 rounded-lg text-gray-600 hover:text-blue-700 hover:bg-blue-50 transition"
+                className="px-3 py-2 text-gray-600 hover:text-blue-700 hover:bg-blue-50 transition"
               >
                 管理
               </Link>
@@ -57,7 +57,7 @@ export default function RootLayout({
         <footer className="border-t border-gray-200 bg-slate-900 text-gray-400">
           <div className="mx-auto max-w-5xl px-4 py-8 flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-2 font-semibold text-white">
-              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-cyan-500">
+              <span className="flex h-7 w-7 items-center justify-center bg-gradient-to-br from-blue-600 to-cyan-500">
                 🚗
               </span>
               AutoReserve
