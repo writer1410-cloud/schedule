@@ -62,21 +62,42 @@ export default async function AdminPage() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-between flex-wrap gap-3">
-        <h1 className="text-2xl font-bold">管理ダッシュボード</h1>
-        <AdminToolbar />
+      {/* ヘッダー */}
+      <div className="relative overflow-hidden rounded-2xl bg-slate-900 text-white">
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-20"
+          style={{
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=80')",
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/80 to-transparent" />
+        <div className="relative px-5 sm:px-7 py-6 flex items-center justify-between flex-wrap gap-3">
+          <div>
+            <span className="text-xs font-medium text-blue-300">
+              Admin Dashboard
+            </span>
+            <h1 className="mt-0.5 text-2xl font-bold">管理ダッシュボード</h1>
+          </div>
+          <AdminToolbar />
+        </div>
       </div>
 
       {/* サマリー */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-        <Stat label="本日の予約" value={todayCount} />
-        <Stat label="今後の予約" value={upcoming.filter((b) => b.status !== "CANCELLED").length} />
-        <Stat label="キャンセル待ち" value={waitingCount} />
+        <Stat label="本日の予約" value={todayCount} icon="📋" accent="from-blue-500 to-blue-600" />
+        <Stat
+          label="今後の予約"
+          value={upcoming.filter((b) => b.status !== "CANCELLED").length}
+          icon="🗓️"
+          accent="from-violet-500 to-violet-600"
+        />
+        <Stat label="キャンセル待ち" value={waitingCount} icon="⏳" accent="from-amber-500 to-orange-600" />
       </div>
 
       {/* 予約一覧 */}
       <section>
-        <h2 className="font-semibold mb-3">今後の予約</h2>
+        <h2 className="eyebrow mb-3">今後の予約</h2>
         {groups.size === 0 ? (
           <p className="text-sm text-gray-500">予約はありません。</p>
         ) : (
@@ -92,10 +113,7 @@ export default async function AdminPage() {
                   {items.map((b) => {
                     const st = STATUS_LABEL[b.status] ?? STATUS_LABEL.CONFIRMED;
                     return (
-                      <div
-                        key={b.id}
-                        className="bg-white rounded-xl border border-gray-200 p-3"
-                      >
+                      <div key={b.id} className="card p-3">
                         <div className="flex items-center justify-between gap-2">
                           <span className="font-mono text-base font-semibold text-gray-700">
                             {formatHuman(b.startAt).split(" ")[1]}
@@ -129,7 +147,7 @@ export default async function AdminPage() {
                 </div>
 
                 {/* PC: テーブル表示 */}
-                <div className="hidden sm:block bg-white rounded-xl border border-gray-200 overflow-x-auto">
+                <div className="hidden sm:block card overflow-x-auto">
                   <table className="w-full text-sm">
                     <tbody className="divide-y divide-gray-100">
                       {items.map((b) => {
@@ -179,11 +197,11 @@ export default async function AdminPage() {
 
       {/* キャンセル待ち */}
       <section>
-        <h2 className="font-semibold mb-3">キャンセル待ち</h2>
+        <h2 className="eyebrow mb-3">キャンセル待ち</h2>
         {waitlist.length === 0 ? (
           <p className="text-sm text-gray-500">登録はありません。</p>
         ) : (
-          <div className="bg-white rounded-xl border border-gray-200 overflow-x-auto">
+          <div className="card overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="bg-gray-50 text-xs text-gray-500">
                 <tr>
@@ -220,11 +238,28 @@ export default async function AdminPage() {
   );
 }
 
-function Stat({ label, value }: { label: string; value: number }) {
+function Stat({
+  label,
+  value,
+  icon,
+  accent,
+}: {
+  label: string;
+  value: number;
+  icon: string;
+  accent: string;
+}) {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-4">
-      <div className="text-xs text-gray-500">{label}</div>
-      <div className="mt-1 text-2xl font-bold">{value}</div>
+    <div className="card p-4 flex items-center gap-3">
+      <div
+        className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${accent} text-xl text-white shadow-md`}
+      >
+        {icon}
+      </div>
+      <div>
+        <div className="text-xs text-gray-500">{label}</div>
+        <div className="mt-0.5 text-2xl font-bold leading-none">{value}</div>
+      </div>
     </div>
   );
 }

@@ -63,18 +63,17 @@ function WaitlistForm() {
 
   if (done) {
     return (
-      <div className="max-w-lg mx-auto bg-white rounded-xl border border-gray-200 p-8 text-center">
-        <div className="text-5xl">⏳</div>
-        <h1 className="mt-4 text-xl font-bold">
+      <div className="max-w-lg mx-auto mt-6 card p-8 text-center">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-orange-500 text-3xl text-white shadow-lg">
+          ⏳
+        </div>
+        <h1 className="mt-5 text-xl font-bold">
           キャンセル待ちに登録しました
         </h1>
         <p className="mt-2 text-gray-600">
           空きが出た場合、ご登録のメールアドレスへ先着でお知らせします。
         </p>
-        <Link
-          href="/"
-          className="mt-6 inline-block px-5 py-2 rounded-lg border border-gray-300 text-sm hover:bg-gray-50"
-        >
+        <Link href="/" className="btn-ghost text-sm mt-6">
           トップへ
         </Link>
       </div>
@@ -82,16 +81,19 @@ function WaitlistForm() {
   }
 
   return (
-    <div className="max-w-lg mx-auto bg-white rounded-xl border border-gray-200 p-6 space-y-4">
-      <h1 className="text-2xl font-bold">キャンセル待ち登録</h1>
-      <p className="text-sm text-gray-600">
-        ご希望の日に空きが出た際、先着でメール通知します。
-      </p>
+    <div className="max-w-lg mx-auto mt-2 card p-6 space-y-4">
+      <div>
+        <span className="eyebrow">満席でも安心</span>
+        <h1 className="mt-3 text-2xl font-bold">キャンセル待ち登録</h1>
+        <p className="mt-1 text-sm text-gray-600">
+          ご希望の日に空きが出た際、先着でメール通知します。
+        </p>
+      </div>
 
       <label className="block">
         <span className="text-xs text-gray-500">メニュー *</span>
         <select
-          className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+          className="input mt-1"
           value={serviceId}
           onChange={(e) => setServiceId(e.target.value)}
         >
@@ -110,14 +112,14 @@ function WaitlistForm() {
           min={todayStr()}
           value={desiredDate}
           onChange={(e) => setDesiredDate(e.target.value)}
-          className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+          className="input mt-1"
         />
       </label>
 
       <label className="block">
         <span className="text-xs text-gray-500">お名前 *</span>
         <input
-          className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+          className="input mt-1"
           value={form.customerName}
           onChange={(e) => setForm({ ...form, customerName: e.target.value })}
         />
@@ -127,7 +129,7 @@ function WaitlistForm() {
         <span className="text-xs text-gray-500">メールアドレス *</span>
         <input
           type="email"
-          className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+          className="input mt-1"
           value={form.customerEmail}
           onChange={(e) => setForm({ ...form, customerEmail: e.target.value })}
         />
@@ -136,7 +138,7 @@ function WaitlistForm() {
       <label className="block">
         <span className="text-xs text-gray-500">電話番号</span>
         <input
-          className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+          className="input mt-1"
           value={form.customerPhone}
           onChange={(e) => setForm({ ...form, customerPhone: e.target.value })}
         />
@@ -146,7 +148,7 @@ function WaitlistForm() {
         <span className="text-xs text-gray-500">備考</span>
         <textarea
           rows={2}
-          className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+          className="input mt-1"
           value={form.note}
           onChange={(e) => setForm({ ...form, note: e.target.value })}
         />
@@ -154,11 +156,7 @@ function WaitlistForm() {
 
       {error && <p className="text-sm text-red-600">{error}</p>}
 
-      <button
-        onClick={submit}
-        disabled={submitting}
-        className="w-full px-6 py-3 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 disabled:opacity-50"
-      >
+      <button onClick={submit} disabled={submitting} className="btn-primary w-full">
         {submitting ? "送信中…" : "キャンセル待ちに登録"}
       </button>
     </div>

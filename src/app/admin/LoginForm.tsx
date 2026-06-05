@@ -30,25 +30,26 @@ export default function LoginForm() {
   }
 
   return (
-    <div className="max-w-sm mx-auto bg-white rounded-xl border border-gray-200 p-6 space-y-4">
-      <h1 className="text-xl font-bold">管理ログイン</h1>
-      <p className="text-xs text-gray-500">
-        管理トークン（環境変数 ADMIN_TOKEN）を入力してください。
-      </p>
+    <div className="max-w-sm mx-auto mt-6 card p-7 space-y-4">
+      <div className="flex flex-col items-center text-center">
+        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 text-2xl text-white shadow-lg">
+          🔒
+        </div>
+        <h1 className="mt-4 text-xl font-bold">管理ログイン</h1>
+        <p className="mt-1 text-xs text-gray-500">
+          管理トークン（環境変数 ADMIN_TOKEN）を入力してください。
+        </p>
+      </div>
       <input
         type="password"
         value={token}
         onChange={(e) => setToken(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && login()}
         placeholder="ADMIN_TOKEN"
-        className="w-full border border-gray-300 rounded-lg px-3 py-2"
+        className="input"
       />
       {error && <p className="text-sm text-red-600">{error}</p>}
-      <button
-        onClick={login}
-        disabled={busy}
-        className="w-full px-6 py-3 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 disabled:opacity-50"
-      >
+      <button onClick={login} disabled={busy} className="btn-primary w-full">
         {busy ? "確認中…" : "ログイン"}
       </button>
     </div>

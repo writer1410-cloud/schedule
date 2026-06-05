@@ -125,27 +125,23 @@ function BookingFlow() {
   // 完了画面
   if (doneCode) {
     return (
-      <div className="max-w-lg mx-auto bg-white rounded-xl border border-gray-200 p-8 text-center">
-        <div className="text-5xl">✅</div>
-        <h1 className="mt-4 text-xl font-bold">ご予約を受け付けました</h1>
+      <div className="max-w-lg mx-auto card p-8 text-center">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-green-600 text-3xl text-white shadow-lg">
+          ✓
+        </div>
+        <h1 className="mt-5 text-xl font-bold">ご予約を受け付けました</h1>
         <p className="mt-2 text-gray-600">確認メールをお送りしました。</p>
-        <div className="mt-4 inline-block bg-blue-50 text-blue-800 font-mono text-lg px-4 py-2 rounded-lg">
+        <div className="mt-4 inline-block bg-blue-50 text-blue-800 font-mono text-lg px-4 py-2 rounded-lg tracking-wider">
           {doneCode}
         </div>
         <p className="mt-4 text-sm text-gray-500">
           予約番号は確認・キャンセルに必要です。大切に保管してください。
         </p>
         <div className="mt-6 flex gap-3 justify-center">
-          <Link
-            href={`/booking/${doneCode}`}
-            className="px-5 py-2 rounded-lg bg-blue-600 text-white text-sm hover:bg-blue-700"
-          >
+          <Link href={`/booking/${doneCode}`} className="btn-primary text-sm">
             予約内容を確認
           </Link>
-          <Link
-            href="/"
-            className="px-5 py-2 rounded-lg border border-gray-300 text-sm hover:bg-gray-50"
-          >
+          <Link href="/" className="btn-ghost text-sm">
             トップへ
           </Link>
         </div>
@@ -155,12 +151,18 @@ function BookingFlow() {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
-      <h1 className="text-2xl font-bold">予約する</h1>
+      <div>
+        <span className="eyebrow">かんたん予約</span>
+        <h1 className="mt-3 text-3xl font-bold tracking-tight">予約する</h1>
+        <p className="mt-1 text-sm text-gray-500">
+          メニュー・日時・お客様情報の3ステップで完了します。
+        </p>
+      </div>
 
       {/* Step 1: メニュー選択 */}
-      <section className="bg-white rounded-xl border border-gray-200 p-5">
-        <h2 className="font-semibold mb-3">
-          <span className="text-blue-600">1.</span> メニューを選ぶ
+      <section className="card p-5">
+        <h2 className="flex items-center gap-2 font-semibold mb-3">
+          <StepNum n={1} /> メニューを選ぶ
         </h2>
         <div className="grid gap-2 sm:grid-cols-2">
           {services.map((s) => (
@@ -193,16 +195,16 @@ function BookingFlow() {
 
       {/* Step 2: 日付・枠選択 */}
       {serviceId && (
-        <section className="bg-white rounded-xl border border-gray-200 p-5">
-          <h2 className="font-semibold mb-3">
-            <span className="text-blue-600">2.</span> 日時を選ぶ
+        <section className="card p-5">
+          <h2 className="flex items-center gap-2 font-semibold mb-3">
+            <StepNum n={2} /> 日時を選ぶ
           </h2>
           <input
             type="date"
             value={date}
             min={todayStr()}
             onChange={(e) => setDate(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-2"
+            className="input max-w-[12rem]"
           />
 
           <div className="mt-4">
@@ -261,9 +263,9 @@ function BookingFlow() {
 
       {/* Step 3: お客様情報 */}
       {slotIso && (
-        <section className="bg-white rounded-xl border border-gray-200 p-5">
-          <h2 className="font-semibold mb-3">
-            <span className="text-blue-600">3.</span> お客様情報
+        <section className="card p-5">
+          <h2 className="flex items-center gap-2 font-semibold mb-3">
+            <StepNum n={3} /> お客様情報
           </h2>
           <div className="grid gap-3 sm:grid-cols-2">
             <Field label="お名前 *">
@@ -332,28 +334,21 @@ function BookingFlow() {
           <button
             onClick={submit}
             disabled={submitting}
-            className="mt-4 w-full sm:w-auto px-6 py-3 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 disabled:opacity-50"
+            className="btn-primary mt-4 w-full sm:w-auto"
           >
             {submitting ? "送信中…" : "この内容で予約する"}
           </button>
         </section>
       )}
-
-      <style>{`
-        .input {
-          width: 100%;
-          border: 1px solid #d1d5db;
-          border-radius: 0.5rem;
-          padding: 0.5rem 0.75rem;
-          font-size: 0.875rem;
-        }
-        .input:focus {
-          outline: none;
-          border-color: #3b82f6;
-          box-shadow: 0 0 0 2px #bfdbfe;
-        }
-      `}</style>
     </div>
+  );
+}
+
+function StepNum({ n }: { n: number }) {
+  return (
+    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-cyan-500 text-xs font-bold text-white">
+      {n}
+    </span>
   );
 }
 

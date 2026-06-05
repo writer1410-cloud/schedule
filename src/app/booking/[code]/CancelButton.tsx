@@ -32,7 +32,7 @@ export default function CancelButton({ code }: { code: string }) {
       <button
         onClick={cancel}
         disabled={busy}
-        className="px-5 py-2 rounded-lg border border-red-300 text-red-700 text-sm hover:bg-red-50 disabled:opacity-50"
+        className="px-5 py-2.5 rounded-xl border border-red-200 bg-red-50 text-red-700 font-medium text-sm hover:bg-red-100 disabled:opacity-50 transition"
       >
         {busy ? "処理中…" : "予約をキャンセルする"}
       </button>

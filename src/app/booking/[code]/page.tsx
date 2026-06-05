@@ -23,9 +23,11 @@ export default async function BookingDetailPage({
 
   if (!booking) {
     return (
-      <div className="max-w-md mx-auto bg-white rounded-xl border border-gray-200 p-8 text-center">
-        <div className="text-4xl">🔍</div>
-        <h1 className="mt-3 font-bold text-lg">予約が見つかりません</h1>
+      <div className="max-w-md mx-auto mt-6 card p-8 text-center">
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-100 text-3xl">
+          🔍
+        </div>
+        <h1 className="mt-4 font-bold text-lg">予約が見つかりません</h1>
         <p className="mt-2 text-sm text-gray-600">
           予約番号「{code}」は存在しません。
         </p>
@@ -44,13 +46,24 @@ export default async function BookingDetailPage({
     booking.status === "CONFIRMED" || booking.status === "PENDING";
 
   return (
-    <div className="max-w-lg mx-auto bg-white rounded-xl border border-gray-200 p-6 space-y-5">
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold">予約内容</h1>
-        <span className={`text-xs px-2 py-1 rounded-full ${status.cls}`}>
-          {status.text}
-        </span>
+    <div className="max-w-lg mx-auto mt-6 card overflow-hidden">
+      <div className="relative bg-slate-900 px-6 py-5 text-white">
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-20"
+          style={{
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1000&q=80')",
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900 to-slate-900/60" />
+        <div className="relative flex items-center justify-between">
+          <h1 className="text-xl font-bold">予約内容</h1>
+          <span className={`text-xs px-2.5 py-1 rounded-full ${status.cls}`}>
+            {status.text}
+          </span>
+        </div>
       </div>
+      <div className="p-6 space-y-5">
 
       <dl className="divide-y divide-gray-100 text-sm">
         <Row label="予約番号">
@@ -76,9 +89,13 @@ export default async function BookingDetailPage({
         </p>
       )}
 
-      <Link href="/" className="block text-center text-sm text-blue-700 underline">
-        トップへ戻る
-      </Link>
+        <Link
+          href="/"
+          className="block text-center text-sm text-blue-700 underline"
+        >
+          トップへ戻る
+        </Link>
+      </div>
     </div>
   );
 }

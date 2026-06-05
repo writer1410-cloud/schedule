@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f6f7f9;
-  --foreground: #111827;
+  --background: #f1f5f9;
+  --foreground: #0f172a;
 }
 
 html {
@@ -10,9 +10,100 @@ html {
 }
 
 body {
-  background: var(--background);
   color: var(--foreground);
+  background-color: var(--background);
+  background-image:
+    radial-gradient(900px circle at 15% -10%, rgba(37, 99, 235, 0.08), transparent 45%),
+    radial-gradient(900px circle at 100% 0%, rgba(6, 182, 212, 0.07), transparent 40%);
+  background-attachment: fixed;
   font-family:
     system-ui, -apple-system, "Hiragino Kaku Gothic ProN", "Noto Sans JP",
     Meiryo, sans-serif;
+}
+
+/* ===== 共通コンポーネント ===== */
+
+.card {
+  background: #fff;
+  border: 1px solid rgb(226 232 240);
+  border-radius: 1rem;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 8px 24px -12px rgba(15, 23, 42, 0.12);
+}
+
+/* 見出しの上に置く小ラベル */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: rgb(37 99 235);
+  background: rgb(239 246 255);
+  border: 1px solid rgb(219 234 254);
+  padding: 0.25rem 0.7rem;
+  border-radius: 9999px;
+}
+
+/* プライマリボタン */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-weight: 600;
+  color: #fff;
+  background-image: linear-gradient(to right, #2563eb, #3b82f6);
+  border-radius: 0.75rem;
+  padding: 0.7rem 1.4rem;
+  box-shadow: 0 10px 20px -10px rgba(37, 99, 235, 0.7);
+  transition: filter 0.15s, transform 0.05s;
+}
+.btn-primary:hover {
+  filter: brightness(1.07);
+}
+.btn-primary:active {
+  transform: translateY(1px);
+}
+.btn-primary:disabled {
+  opacity: 0.55;
+  filter: none;
+  box-shadow: none;
+}
+
+/* サブ（枠線）ボタン */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-weight: 600;
+  color: rgb(51 65 85);
+  background: #fff;
+  border: 1px solid rgb(203 213 225);
+  border-radius: 0.75rem;
+  padding: 0.7rem 1.4rem;
+  transition: background 0.15s, border-color 0.15s;
+}
+.btn-ghost:hover {
+  background: rgb(248 250 252);
+  border-color: rgb(148 163 184);
+}
+
+/* 入力 */
+.input {
+  width: 100%;
+  border: 1px solid rgb(203 213 225);
+  border-radius: 0.6rem;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.9rem;
+  background: #fff;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
 }
