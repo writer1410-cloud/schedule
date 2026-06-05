@@ -86,7 +86,50 @@ export default async function AdminPage() {
                 <h3 className="text-sm font-medium text-gray-500 mb-2">
                   {formatDateHuman(dayStartUtc(date))}
                 </h3>
-                <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+
+                {/* スマホ: カード表示 */}
+                <div className="space-y-2 sm:hidden">
+                  {items.map((b) => {
+                    const st = STATUS_LABEL[b.status] ?? STATUS_LABEL.CONFIRMED;
+                    return (
+                      <div
+                        key={b.id}
+                        className="bg-white rounded-xl border border-gray-200 p-3"
+                      >
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="font-mono text-base font-semibold text-gray-700">
+                            {formatHuman(b.startAt).split(" ")[1]}
+                          </span>
+                          <span
+                            className={`text-xs px-2 py-0.5 rounded-full ${st.cls}`}
+                          >
+                            {st.text}
+                          </span>
+                        </div>
+                        <div className="mt-1.5 flex items-center gap-1.5">
+                          <span
+                            className="inline-block w-2 h-2 rounded-full shrink-0"
+                            style={{ background: b.service.color }}
+                          />
+                          <span className="font-medium">{b.service.name}</span>
+                        </div>
+                        <div className="mt-1">{b.customerName}</div>
+                        <div className="text-xs text-gray-400">
+                          {b.carModel ?? ""} {b.customerPhone ?? ""}
+                        </div>
+                        <div className="mt-1 font-mono text-xs text-gray-400">
+                          {b.code}
+                        </div>
+                        <div className="mt-2 flex justify-end">
+                          <BookingActions id={b.id} status={b.status} />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* PC: テーブル表示 */}
+                <div className="hidden sm:block bg-white rounded-xl border border-gray-200 overflow-x-auto">
                   <table className="w-full text-sm">
                     <tbody className="divide-y divide-gray-100">
                       {items.map((b) => {
@@ -96,7 +139,7 @@ export default async function AdminPage() {
                             <td className="px-3 py-2 whitespace-nowrap font-mono text-gray-600">
                               {formatHuman(b.startAt).split(" ")[1]}
                             </td>
-                            <td className="px-3 py-2">
+                            <td className="px-3 py-2 whitespace-nowrap">
                               <span
                                 className="inline-block w-2 h-2 rounded-full mr-1 align-middle"
                                 style={{ background: b.service.color }}
@@ -109,17 +152,17 @@ export default async function AdminPage() {
                                 {b.carModel ?? ""} {b.customerPhone ?? ""}
                               </div>
                             </td>
-                            <td className="px-3 py-2 font-mono text-xs text-gray-400">
+                            <td className="px-3 py-2 font-mono text-xs text-gray-400 whitespace-nowrap">
                               {b.code}
                             </td>
                             <td className="px-3 py-2">
                               <span
-                                className={`text-xs px-2 py-0.5 rounded-full ${st.cls}`}
+                                className={`text-xs px-2 py-0.5 rounded-full whitespace-nowrap ${st.cls}`}
                               >
                                 {st.text}
                               </span>
                             </td>
-                            <td className="px-3 py-2 text-right">
+                            <td className="px-3 py-2 text-right whitespace-nowrap">
                               <BookingActions id={b.id} status={b.status} />
                             </td>
                           </tr>
@@ -140,11 +183,11 @@ export default async function AdminPage() {
         {waitlist.length === 0 ? (
           <p className="text-sm text-gray-500">登録はありません。</p>
         ) : (
-          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <div className="bg-white rounded-xl border border-gray-200 overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="bg-gray-50 text-xs text-gray-500">
                 <tr>
-                  <th className="px-3 py-2 text-left">希望日</th>
+                  <th className="px-3 py-2 text-left whitespace-nowrap">希望日</th>
                   <th className="px-3 py-2 text-left">メニュー</th>
                   <th className="px-3 py-2 text-left">お客様</th>
                   <th className="px-3 py-2 text-left">状態</th>
