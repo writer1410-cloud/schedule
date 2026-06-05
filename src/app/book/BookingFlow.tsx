@@ -3,15 +3,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-
-export type Service = {
-  id: string;
-  name: string;
-  description: string | null;
-  durationMin: number;
-  price: number | null;
-  color: string;
-};
+import type { Service } from "@/lib/services";
+import { priceLabel } from "@/lib/format";
 
 type Slot = {
   startIso: string;
@@ -29,12 +22,6 @@ type Availability = {
 
 function todayStr(): string {
   return new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Tokyo" });
-}
-
-function yen(price: number | null): string {
-  if (price === null) return "別途見積";
-  if (price === 0) return "別途見積";
-  return `¥${price.toLocaleString()}`;
 }
 
 export default function BookingFlow({
@@ -182,7 +169,7 @@ export default function BookingFlow({
                 <span className="font-medium">{s.name}</span>
               </div>
               <div className="mt-1 text-xs text-gray-500">
-                所要 {s.durationMin}分 ・ {yen(s.price)}
+                所要 {s.durationMin}分 ・ {priceLabel(s.price)}
               </div>
               {s.description && (
                 <div className="mt-1 text-xs text-gray-400">{s.description}</div>

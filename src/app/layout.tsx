@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { SHOP } from "@/lib/shop";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AutoReserve｜自動車整備の予約システム",
-  description:
-    "自動車販売・整備業者向けの予約／日程調整／前日リマインド／キャンセル待ち自動化システム",
+  title: `${SHOP.name}｜車検・点検・修理のWeb予約`,
+  description: `${SHOP.area}の自動車整備工場「${SHOP.name}」。車検・点検・オイル交換・タイヤ交換・修理のご相談をWebから24時間予約できます。`,
 };
 
 export default function RootLayout({
@@ -26,7 +26,7 @@ export default function RootLayout({
                 🚗
               </span>
               <span className="hidden xs:inline">
-                Auto<span className="text-blue-600">Reserve</span>
+                みなと<span className="text-blue-600">自動車</span>
               </span>
             </Link>
             <nav className="flex items-center gap-0.5 sm:gap-2 text-sm shrink-0">
@@ -56,14 +56,19 @@ export default function RootLayout({
         </main>
         <footer className="border-t border-gray-200 bg-slate-900 text-gray-400">
           <div className="mx-auto max-w-5xl px-4 py-8 flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-2 font-semibold text-white">
-              <span className="flex h-7 w-7 items-center justify-center bg-gradient-to-br from-blue-600 to-cyan-500">
-                🚗
-              </span>
-              AutoReserve
+            <div>
+              <div className="flex items-center gap-2 font-semibold text-white">
+                <span className="flex h-7 w-7 items-center justify-center bg-gradient-to-br from-blue-600 to-cyan-500">
+                  🚗
+                </span>
+                {SHOP.name}
+              </div>
+              <p className="mt-2 text-xs">
+                {SHOP.address}／TEL {SHOP.phone}（{SHOP.hours}・{SHOP.closed}定休）
+              </p>
             </div>
             <p className="text-xs">
-              自動車整備向け 予約システム（ポートフォリオデモ）
+              © {new Date().getFullYear()} {SHOP.name}
             </p>
           </div>
         </footer>
