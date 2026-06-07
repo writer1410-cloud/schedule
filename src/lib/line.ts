@@ -13,6 +13,19 @@ export function isLiffConfigured(): boolean {
   return Boolean(config.line.liffId && config.line.loginChannelId);
 }
 
+/**
+ * 予約画面への入口URL。
+ * LIFF が設定済みなら LIFF URL（LINE内で開くと ID トークンが取れ、ユーザーと紐付く）。
+ * 未設定なら通常の Web URL。
+ */
+export function bookingEntryUrl(query?: string): string {
+  const q = query ? `?${query}` : "";
+  if (config.line.liffId) {
+    return `https://liff.line.me/${config.line.liffId}${q}`;
+  }
+  return `${config.appUrl}/book${q}`;
+}
+
 type LineMessage =
   | { type: "text"; text: string }
   | Record<string, unknown>;

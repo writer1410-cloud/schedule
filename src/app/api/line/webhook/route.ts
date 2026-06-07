@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { config } from "@/lib/config";
 import {
   verifyLineSignature,
   replyLineMessages,
   textWithLink,
+  bookingEntryUrl,
 } from "@/lib/line";
 import { SHOP } from "@/lib/shop";
 
@@ -15,7 +15,8 @@ type LineEvent = {
   message?: { type: string; text?: string };
 };
 
-const bookUrl = () => `${config.appUrl}/book`;
+// LINE内で開くと LIFF として起動し、予約とLINEユーザーが紐づく
+const bookUrl = () => bookingEntryUrl();
 
 // LINE プラットフォームからの Webhook 受信
 export async function POST(req: Request) {

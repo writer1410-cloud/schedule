@@ -1,6 +1,6 @@
 import type { Booking, Service, WaitlistEntry } from "@prisma/client";
 import { sendMail } from "./email";
-import { pushLineMessages, textWithLink } from "./line";
+import { pushLineMessages, textWithLink, bookingEntryUrl } from "./line";
 import { config } from "./config";
 import { formatHuman, formatDateHuman, toDateStr } from "./time";
 
@@ -130,7 +130,9 @@ export async function sendWaitlistOpening(
     `【空き枠のお知らせ】\n${w.service.name}\n${formatDateHuman(w.desiredDate)}\n空きが出ました。先着順のためお早めにご予約ください。`,
     {
       label: "今すぐ予約する",
-      uri: `${config.appUrl}/book?serviceId=${w.serviceId}&date=${toDateStr(w.desiredDate)}`,
+      uri: bookingEntryUrl(
+        `serviceId=${w.serviceId}&date=${toDateStr(w.desiredDate)}`,
+      ),
     },
   );
 }
