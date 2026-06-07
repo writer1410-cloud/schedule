@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { formatHuman, formatTime } from "@/lib/time";
+import { SHOP } from "@/lib/shop";
 import CancelButton from "./CancelButton";
 
 const STATUS_LABEL: Record<string, { text: string; cls: string }> = {
@@ -48,13 +49,12 @@ export default async function BookingDetailPage({
   return (
     <div className="max-w-lg mx-auto mt-6 card overflow-hidden">
       <div className="relative bg-slate-900 px-6 py-5 text-white">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-20"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1000&q=80')",
-          }}
-        />
+        {SHOP.images?.hero && (
+          <div
+            className="absolute inset-0 bg-cover bg-center opacity-20"
+            style={{ backgroundImage: `url('${SHOP.images.hero}')` }}
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-r from-slate-900 to-slate-900/60" />
         <div className="relative flex items-center justify-between">
           <h1 className="text-xl font-bold">予約内容</h1>
@@ -74,8 +74,13 @@ export default async function BookingDetailPage({
           {formatHuman(booking.startAt)} 〜 {formatTime(booking.endAt)}
         </Row>
         <Row label="お名前">{booking.customerName} 様</Row>
-        {booking.carModel && <Row label="車種">{booking.carModel}</Row>}
-        {booking.carPlate && <Row label="ナンバー">{booking.carPlate}</Row>}
+        {SHOP.customFields.map((cf) =>
+          booking[cf.key] ? (
+            <Row key={cf.key} label={cf.label}>
+              {booking[cf.key]}
+            </Row>
+          ) : null,
+        )}
         {booking.note && <Row label="備考">{booking.note}</Row>}
       </dl>
 

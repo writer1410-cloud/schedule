@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import type { Service } from "@/lib/services";
+import type { CustomField } from "@/lib/preset";
 import { priceLabel } from "@/lib/format";
 import { useLiff } from "@/lib/useLiff";
 
@@ -27,8 +28,12 @@ function todayStr(): string {
 
 export default function BookingFlow({
   initialServices,
+  customFields = [],
+  serviceWord = "メニュー",
 }: {
   initialServices: Service[];
+  customFields?: CustomField[];
+  serviceWord?: string;
 }) {
   const params = useSearchParams();
   const liff = useLiff();
@@ -155,7 +160,7 @@ export default function BookingFlow({
         <span className="eyebrow">かんたん予約</span>
         <h1 className="mt-3 text-3xl font-bold tracking-tight">予約する</h1>
         <p className="mt-1 text-sm text-gray-500">
-          メニュー・日時・お客様情報の3ステップで完了します。
+          {serviceWord}・日時・お客様情報の3ステップで完了します。
         </p>
         {liff.idToken && (
           <p className="mt-2 inline-flex items-center gap-1.5 bg-[#06C755]/10 text-[#06C755] text-xs font-medium px-2.5 py-1">
@@ -168,7 +173,7 @@ export default function BookingFlow({
       {/* Step 1: メニュー選択 */}
       <section className="card p-5">
         <h2 className="flex items-center gap-2 font-semibold mb-3">
-          <StepNum n={1} /> メニューを選ぶ
+          <StepNum n={1} /> {serviceWord}を選ぶ
         </h2>
         <div className="grid gap-2 sm:grid-cols-2">
           {services.map((s) => (
@@ -300,20 +305,18 @@ export default function BookingFlow({
                 }
               />
             </Field>
-            <Field label="車種">
-              <input
-                className="input"
-                value={form.carModel}
-                onChange={(e) => setForm({ ...form, carModel: e.target.value })}
-              />
-            </Field>
-            <Field label="ナンバー">
-              <input
-                className="input"
-                value={form.carPlate}
-                onChange={(e) => setForm({ ...form, carPlate: e.target.value })}
-              />
-            </Field>
+            {customFields.map((cf) => (
+              <Field key={cf.key} label={cf.label}>
+                <input
+                  className="input"
+                  placeholder={cf.placeholder}
+                  value={form[cf.key]}
+                  onChange={(e) =>
+                    setForm({ ...form, [cf.key]: e.target.value })
+                  }
+                />
+              </Field>
+            ))}
             <Field label="ご要望・備考" full>
               <textarea
                 className="input"

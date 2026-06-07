@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/db";
 import { isAdminLoggedIn } from "@/lib/auth";
 import { dayStartUtc, toDateStr, formatHuman, formatDateHuman } from "@/lib/time";
+import { SHOP } from "@/lib/shop";
 import LoginForm from "./LoginForm";
 import AdminToolbar from "./AdminToolbar";
 import BookingActions from "./BookingActions";
@@ -64,13 +65,12 @@ export default async function AdminPage() {
     <div className="space-y-8">
       {/* ヘッダー */}
       <div className="relative overflow-hidden bg-slate-900 text-white">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-20"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=80')",
-          }}
-        />
+        {SHOP.images?.garage && (
+          <div
+            className="absolute inset-0 bg-cover bg-center opacity-20"
+            style={{ backgroundImage: `url('${SHOP.images.garage}')` }}
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/80 to-transparent" />
         <div className="relative px-5 sm:px-7 py-6 flex items-center justify-between flex-wrap gap-3">
           <div>

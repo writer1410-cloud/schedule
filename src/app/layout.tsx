@@ -4,8 +4,8 @@ import { SHOP } from "@/lib/shop";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: `${SHOP.name}｜車検・点検・修理のWeb予約`,
-  description: `${SHOP.area}の自動車整備工場「${SHOP.name}」。車検・点検・オイル交換・タイヤ交換・修理のご相談をWebから24時間予約できます。`,
+  title: `${SHOP.name}｜${SHOP.metaTitle}`,
+  description: SHOP.metaDescription,
 };
 
 export default function RootLayout({
@@ -23,11 +23,9 @@ export default function RootLayout({
               className="flex items-center gap-2 shrink-0 font-bold text-base sm:text-lg tracking-tight text-gray-900"
             >
               <span className="flex h-8 w-8 shrink-0 items-center justify-center bg-gradient-to-br from-blue-600 to-cyan-500 text-white">
-                🚗
+                {SHOP.icon}
               </span>
-              <span className="hidden xs:inline">
-                みなと<span className="text-blue-600">自動車</span>
-              </span>
+              <span className="hidden xs:inline">{SHOP.brand}</span>
             </Link>
             <nav className="flex items-center gap-0.5 sm:gap-2 text-sm shrink-0">
               <Link
@@ -59,7 +57,7 @@ export default function RootLayout({
             <div>
               <div className="flex items-center gap-2 font-semibold text-white">
                 <span className="flex h-7 w-7 items-center justify-center bg-gradient-to-br from-blue-600 to-cyan-500">
-                  🚗
+                  {SHOP.icon}
                 </span>
                 {SHOP.name}
               </div>

@@ -85,6 +85,8 @@ model Booking {
   customerName  String
   customerEmail String
   customerPhone String?
+  /// 業種ごとの追加入力欄1・2（preset の customFields でラベルを設定）。
+  /// 例: 自動車=車種/ナンバー、サロン=希望スタイル、飲食=人数/席の希望
   carModel      String?
   carPlate      String?
   note          String?
