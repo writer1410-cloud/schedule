@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { useLiff } from "@/lib/useLiff";
 
 type Service = { id: string; name: string };
 
@@ -12,6 +13,7 @@ function todayStr(): string {
 
 function WaitlistForm() {
   const params = useSearchParams();
+  const liff = useLiff();
   const [services, setServices] = useState<Service[]>([]);
   const [serviceId, setServiceId] = useState("");
   const [desiredDate, setDesiredDate] = useState(todayStr());
@@ -39,6 +41,15 @@ function WaitlistForm() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // LINE（LIFF）でログイン済みなら、お名前を初期入力
+  useEffect(() => {
+    if (liff.displayName) {
+      setForm((f) =>
+        f.customerName ? f : { ...f, customerName: liff.displayName! },
+      );
+    }
+  }, [liff.displayName]);
+
   async function submit() {
     setError("");
     setSubmitting(true);
@@ -46,7 +57,12 @@ function WaitlistForm() {
       const r = await fetch("/api/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ serviceId, desiredDate, ...form }),
+        body: JSON.stringify({
+          serviceId,
+          desiredDate,
+          ...form,
+          lineIdToken: liff.idToken ?? undefined,
+        }),
       });
       const d = await r.json();
       if (!r.ok) {

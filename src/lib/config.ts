@@ -21,4 +21,12 @@ export const config = {
     serviceAccountEmail: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL ?? "",
     serviceAccountKey: process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY ?? "",
   },
+  line: {
+    // Messaging API（push 通知・Webhook 用）
+    channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN ?? "",
+    channelSecret: process.env.LINE_CHANNEL_SECRET ?? "",
+    // LIFF（LINE 内で予約画面を開く）。ID トークン検証に使うチャネルID
+    liffId: process.env.NEXT_PUBLIC_LIFF_ID ?? "",
+    loginChannelId: process.env.LINE_LOGIN_CHANNEL_ID ?? "",
+  },
 };

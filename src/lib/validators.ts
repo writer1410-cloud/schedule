@@ -9,6 +9,8 @@ export const bookingInput = z.object({
   carModel: z.string().max(100).optional().or(z.literal("")),
   carPlate: z.string().max(30).optional().or(z.literal("")),
   note: z.string().max(1000).optional().or(z.literal("")),
+  // LIFF（LINE 内予約）から渡される ID トークン
+  lineIdToken: z.string().optional(),
 });
 export type BookingInput = z.infer<typeof bookingInput>;
 
@@ -19,5 +21,7 @@ export const waitlistInput = z.object({
   customerEmail: z.string().email("メールアドレスの形式が不正です"),
   customerPhone: z.string().max(30).optional().or(z.literal("")),
   note: z.string().max(1000).optional().or(z.literal("")),
+  // LIFF（LINE 内登録）から渡される ID トークン
+  lineIdToken: z.string().optional(),
 });
 export type WaitlistInput = z.infer<typeof waitlistInput>;

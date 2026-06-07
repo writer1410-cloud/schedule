@@ -89,6 +89,9 @@ model Booking {
   carPlate      String?
   note          String?
 
+  /// LINE 連携で予約した場合の LINE ユーザーID（push 通知先）
+  lineUserId    String?
+
   startAt   DateTime
   endAt     DateTime
   status    String   @default("CONFIRMED")
@@ -117,6 +120,9 @@ model WaitlistEntry {
   customerEmail String
   customerPhone String?
   note          String?
+
+  /// LINE 連携で登録した場合の LINE ユーザーID（空き通知先）
+  lineUserId    String?
 
   /// 希望日（その日の 00:00 店舗TZ）
   desiredDate DateTime

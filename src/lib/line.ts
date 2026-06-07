@@ -1,0 +1,127 @@
+import crypto from "crypto";
+import { config } from "./config";
+
+const LINE_API = "https://api.line.me";
+
+/** Messaging API（push / 返信）が使える設定になっているか */
+export function isLineMessagingConfigured(): boolean {
+  return Boolean(config.line.channelAccessToken);
+}
+
+/** LIFF（LINE 内予約）が使える設定になっているか */
+export function isLiffConfigured(): boolean {
+  return Boolean(config.line.liffId && config.line.loginChannelId);
+}
+
+type LineMessage =
+  | { type: "text"; text: string }
+  | Record<string, unknown>;
+
+/** テキスト＋任意のリンクボタンのメッセージを組み立てる */
+export function textWithLink(text: string, link?: { label: string; uri: string }) {
+  if (!link) return [{ type: "text", text } as LineMessage];
+  // ボタン付きテンプレート（リンクを開かせたいとき）
+  return [
+    {
+      type: "template",
+      altText: text,
+      template: {
+        type: "buttons",
+        text: text.length > 160 ? text.slice(0, 157) + "…" : text,
+        actions: [{ type: "uri", label: link.label, uri: link.uri }],
+      },
+    } as LineMessage,
+  ];
+}
+
+/** LINE ユーザーへ push 送信。未設定時は何もしない（メールにフォールバック） */
+export async function pushLineMessages(
+  to: string,
+  messages: LineMessage[],
+): Promise<void> {
+  if (!isLineMessagingConfigured()) {
+    console.log("[line] push skipped (not configured):", to);
+    return;
+  }
+  const res = await fetch(`${LINE_API}/v2/bot/message/push`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${config.line.channelAccessToken}`,
+    },
+    body: JSON.stringify({ to, messages }),
+  });
+  if (!res.ok) {
+    const detail = await res.text().catch(() => "");
+    throw new Error(`LINE push failed: ${res.status} ${detail}`);
+  }
+}
+
+/** Webhook の返信トークンで返信する */
+export async function replyLineMessages(
+  replyToken: string,
+  messages: LineMessage[],
+): Promise<void> {
+  if (!isLineMessagingConfigured()) return;
+  const res = await fetch(`${LINE_API}/v2/bot/message/reply`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${config.line.channelAccessToken}`,
+    },
+    body: JSON.stringify({ replyToken, messages }),
+  });
+  if (!res.ok) {
+    const detail = await res.text().catch(() => "");
+    console.error("[line] reply failed", res.status, detail);
+  }
+}
+
+/** Webhook 署名検証（X-Line-Signature） */
+export function verifyLineSignature(rawBody: string, signature: string | null): boolean {
+  if (!config.line.channelSecret || !signature) return false;
+  const expected = crypto
+    .createHmac("sha256", config.line.channelSecret)
+    .update(rawBody)
+    .digest("base64");
+  try {
+    return crypto.timingSafeEqual(
+      Buffer.from(expected),
+      Buffer.from(signature),
+    );
+  } catch {
+    return false;
+  }
+}
+
+export type LiffProfile = { userId: string; displayName?: string };
+
+/**
+ * LIFF から渡された ID トークンを LINE のエンドポイントで検証し、
+ * ユーザーID（sub）と表示名を取り出す。検証できなければ null。
+ */
+export async function verifyLiffIdToken(
+  idToken: string,
+): Promise<LiffProfile | null> {
+  if (!config.line.loginChannelId) return null;
+  try {
+    const res = await fetch(`${LINE_API}/oauth2/v2.1/verify`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        id_token: idToken,
+        client_id: config.line.loginChannelId,
+      }),
+    });
+    if (!res.ok) {
+      console.error("[line] id token verify failed", res.status);
+      return null;
+    }
+    const data = (await res.json()) as { sub?: string; name?: string };
+    if (!data.sub) return null;
+    return { userId: data.sub, displayName: data.name };
+  } catch (e) {
+    console.error("[line] id token verify error", e);
+    return null;
+  }
+}

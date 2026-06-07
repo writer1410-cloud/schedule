@@ -12,12 +12,13 @@ import {
   sendWaitlistOpening,
 } from "./notifications";
 import { dayStartUtc, toDateStr, formatHuman } from "./time";
+import { verifyLiffIdToken } from "./line";
 import { addMinutes } from "date-fns";
 import type { BookingInput } from "./validators";
 
 export class BookingError extends Error {}
 
-/** 予約を作成し、カレンダー登録・確認メール送信まで行う */
+/** 予約を作成し、カレンダー登録・確認メール／LINE 送信まで行う */
 export async function createBooking(input: BookingInput) {
   const startAt = new Date(input.startIso);
 
@@ -30,6 +31,13 @@ export async function createBooking(input: BookingInput) {
   if (invalid) throw new BookingError(invalid);
 
   const endAt = addMinutes(startAt, service.durationMin);
+
+  // LIFF 経由なら ID トークンを検証して LINE ユーザーIDを取得（通知先に使う）
+  let lineUserId: string | null = null;
+  if (input.lineIdToken) {
+    const profile = await verifyLiffIdToken(input.lineIdToken);
+    lineUserId = profile?.userId ?? null;
+  }
 
   // 一意な予約番号を採番（衝突時はリトライ）
   let booking = null;
@@ -46,6 +54,7 @@ export async function createBooking(input: BookingInput) {
           carModel: input.carModel || null,
           carPlate: input.carPlate || null,
           note: input.note || null,
+          lineUserId,
           startAt,
           endAt,
           status: "CONFIRMED",

@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import type { Service } from "@/lib/services";
 import { priceLabel } from "@/lib/format";
+import { useLiff } from "@/lib/useLiff";
 
 type Slot = {
   startIso: string;
@@ -30,6 +31,7 @@ export default function BookingFlow({
   initialServices: Service[];
 }) {
   const params = useSearchParams();
+  const liff = useLiff();
   const [services] = useState<Service[]>(initialServices);
   const [serviceId, setServiceId] = useState<string>("");
   const [date, setDate] = useState<string>(todayStr());
@@ -78,6 +80,13 @@ export default function BookingFlow({
     if (serviceId && date) loadAvailability();
   }, [serviceId, date, loadAvailability]);
 
+  // LINE（LIFF）でログイン済みなら、お名前を初期入力
+  useEffect(() => {
+    if (liff.displayName) {
+      setForm((f) => (f.customerName ? f : { ...f, customerName: liff.displayName! }));
+    }
+  }, [liff.displayName]);
+
   const selectedService = services.find((s) => s.id === serviceId);
 
   async function submit() {
@@ -91,7 +100,12 @@ export default function BookingFlow({
       const r = await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ serviceId, startIso: slotIso, ...form }),
+        body: JSON.stringify({
+          serviceId,
+          startIso: slotIso,
+          ...form,
+          lineIdToken: liff.idToken ?? undefined,
+        }),
       });
       const d = await r.json();
       if (!r.ok) {
@@ -143,6 +157,12 @@ export default function BookingFlow({
         <p className="mt-1 text-sm text-gray-500">
           メニュー・日時・お客様情報の3ステップで完了します。
         </p>
+        {liff.idToken && (
+          <p className="mt-2 inline-flex items-center gap-1.5 bg-[#06C755]/10 text-[#06C755] text-xs font-medium px-2.5 py-1">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#06C755]" />
+            LINEで予約中 — 確定通知・リマインドをLINEにお送りします
+          </p>
+        )}
       </div>
 
       {/* Step 1: メニュー選択 */}
