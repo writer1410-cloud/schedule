@@ -109,30 +109,63 @@ export function verifyLineSignature(rawBody: string, signature: string | null): 
 
 export type LiffProfile = { userId: string; displayName?: string };
 
+/** JWT のペイロードから aud（発行チャネルID）を取り出す。失敗時 null */
+function decodeAud(idToken: string): string | null {
+  try {
+    const payload = idToken.split(".")[1];
+    if (!payload) return null;
+    const json = JSON.parse(Buffer.from(payload, "base64url").toString("utf8"));
+    const aud = json.aud;
+    if (Array.isArray(aud)) return aud[0] ?? null;
+    return typeof aud === "string" ? aud : null;
+  } catch {
+    return null;
+  }
+}
+
+async function verifyWith(
+  idToken: string,
+  clientId: string,
+): Promise<LiffProfile | null> {
+  const res = await fetch(`${LINE_API}/oauth2/v2.1/verify`, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({ id_token: idToken, client_id: clientId }),
+  });
+  if (!res.ok) {
+    const detail = await res.text().catch(() => "");
+    console.error("[line] id token verify failed", res.status, clientId, detail);
+    return null;
+  }
+  const data = (await res.json()) as { sub?: string; name?: string };
+  if (!data.sub) return null;
+  return { userId: data.sub, displayName: data.name };
+}
+
 /**
  * LIFF から渡された ID トークンを LINE のエンドポイントで検証し、
  * ユーザーID（sub）と表示名を取り出す。検証できなければ null。
+ * 設定の channel ID が合わない場合は、トークン内の aud で自動リトライする。
  */
 export async function verifyLiffIdToken(
   idToken: string,
 ): Promise<LiffProfile | null> {
-  if (!config.line.loginChannelId) return null;
+  const aud = decodeAud(idToken);
+  const configured = config.line.loginChannelId;
+  const clientId = configured || aud;
+  if (!clientId) {
+    console.error("[line] no client_id for id token verify (set LINE_LOGIN_CHANNEL_ID)");
+    return null;
+  }
   try {
-    const res = await fetch(`${LINE_API}/oauth2/v2.1/verify`, {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        id_token: idToken,
-        client_id: config.line.loginChannelId,
-      }),
-    });
-    if (!res.ok) {
-      console.error("[line] id token verify failed", res.status);
-      return null;
+    const result = await verifyWith(idToken, clientId);
+    if (result) return result;
+    // 設定値で失敗し、トークンの aud が別なら aud でリトライ
+    if (aud && aud !== clientId) {
+      console.warn("[line] retrying id token verify with token aud", aud);
+      return await verifyWith(idToken, aud);
     }
-    const data = (await res.json()) as { sub?: string; name?: string };
-    if (!data.sub) return null;
-    return { userId: data.sub, displayName: data.name };
+    return null;
   } catch (e) {
     console.error("[line] id token verify error", e);
     return null;

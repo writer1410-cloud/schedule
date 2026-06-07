@@ -37,6 +37,9 @@ export async function createBooking(input: BookingInput) {
   if (input.lineIdToken) {
     const profile = await verifyLiffIdToken(input.lineIdToken);
     lineUserId = profile?.userId ?? null;
+    console.log(
+      `[booking] line link ${lineUserId ? "ok: " + lineUserId.slice(0, 8) + "…" : "FAILED (id token not verified)"}`,
+    );
   }
 
   // 一意な予約番号を採番（衝突時はリトライ）
